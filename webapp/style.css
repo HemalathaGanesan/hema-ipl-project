@@ -1,41 +1,76 @@
-.heading {
-  text-align: center;
+body {
+  margin: 0px;
 }
-.data {
-  margin-left: 200px;
-  margin-right: 200px;
-  background-color: darkturquoise;
-  height: auto;
+.main {
+  margin: 0;
+  display: flex;
+  width: 100%;
+  background-color: darkcyan;
+  justify-content: center;
 }
 .title {
+  margin-top: 10px;
+  border: 2px solid;
+  margin-left: 10px;
+  padding: 10px 20px;
+  width: 100px;
   text-align: center;
-}
-.nav-container{
-    border: 2px solid ivory;
-    background-color: #dedbdb;
-}
-.players {
-  display: block;
-}
-.players li {
-  display: block;
-  background-color: lightgray;
-    color: chocolate;
+  background-color: cadetblue;
 }
 .seasons {
-  display: block;
+  list-style-type: none;
 }
 .seasons ul {
-    background-color: darkgoldenrod;
-    color: saddlebrown;
-  }
-.teams {
-  display: block;
+  margin: 10px;
+  list-style-type: none;
+  text-align: center;
 }
-.teams ul {
-    background-color: #8e5e5e;
-    color: black;
-  }
-.datas {
-  padding-left: 60px;
+.season-text {
+  margin-top: 10px;
+  border: 2px solid;
+  margin-left: 10px;
+  padding: 10px 50px;
+  background-color: cadetblue;
+  display: flex;
+  width: 100px;
+  justify-content: center;
+}
+.teams {
+  border: 2px solid;
+  padding: 10px 30px;
+  width: 20%;
+  background-color: aliceblue;
+}
+.team-text {
+  color: #f90704;
+}
+.players {
+  border: 2px solid;
+  background-color: #9ca2a2;
+  margin-top: 10px;
+  padding: 20px;
+}
+.play_data {
+  margin: 30px;
+  background-color: #45d2ab;
+  height: 300px;
+  border-radius: 15px;
+  padding: 30px;
+}
+
+.rowvalue {
+  padding-left: 20px;
+  padding: 17px;
+  display: flex;
+}
+.rowvalue div {
+  width: 40%;
+  font-size: 17px;
+  padding-left: 30px;
+}
+.player-table {
+  width: 50%;
+  top: 30%;
+  position: absolute;
+  margin-left: 436px;
 }

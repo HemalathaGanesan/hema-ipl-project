@@ -1,92 +1,130 @@
-var playersData;
+var apiData;
 $(document).ready(function() {
   $(document.body).on("click", ".title", function(event) {
-    // console.log(this)
     event.stopPropagation();
-
     if ($(".nav-container").children().length === 0) {
-     // console.log($(".nav-container").children().length);
-      fetch("/api/getSeason")
+      fetch("/api/season")
         .then(function(response) {
           return response.json();
         })
-        .then(function(data) {
-          var d = "";
-          data.forEach(e => {
-            d += '<li class="seasons" season-id="' + e + '">' + e + "</li>";
+        .then(function(season) {
+          var years = "";
+          season.forEach(year => {
+            years += `<li class="seasons" season-id=${year}><span class="season-text">${year}</span></li>`;
           });
-          $(".nav-container").append("<ul>" + d + "</ul>");
+          $(".nav-container").append(`<ul>${years}</ul>`);
         });
     }
-
     $(".seasons").toggle();
   });
 
   $(document.body).on("click", ".seasons", function(event) {
-    // console.log(this)
+    console.log($(this).children().length);
     event.stopPropagation();
     var thisObj = this;
+    var season = $(this).text();
 
-    var t = $(this).text();
-
-    if ($(this).children().length === 0) {
-      fetch("/api/getteam/" + t)
+    if ($(this).children().length === 1) {
+      fetch("/api/team/" + season)
         .then(function(response) {
           return response.json();
         })
-        .then(function(val) {
-         // console.log(val);
-          var s = "";
-          val.forEach(n => {
-            s += '<li class="teams">' + n + "</li>";
+        .then(function(teams) {
+          // console.log(val);
+          var team_data = "";
+          teams.forEach(team => {
+            team_data += `<li class="teams" team-id=${team}><span class="team-text">${team}</span></li>`;
           });
-          // console.log(this)
-          $(thisObj).append("<ul>" + s + "</ul>");
+
+          $(thisObj).append(`<ul>${team_data}</ul>`);
         });
     }
-    $(this).children().toggle();
+    $(this)
+      .find(".teams")
+      .toggle();
   });
 
   $(document.body).on("click", ".teams", function(event) {
     event.stopPropagation();
-    var pare = $(this)
+    var season = $(this)
       .parent()
       .closest(".seasons")
       .attr("season-id");
     var thisObj = this;
-    //console.log(thisObj);
-    var c = $(this).text();
-
-    if ($(this).children().length === 0) {
-      fetch("/api/getplayer/" + pare + "/" + c)
+    console.log(thisObj);
+    var team = $(this).text();
+    if ($(this).children().length === 1) {
+      fetch("/api/player/" + season + "/" + team)
         .then(function(response) {
+          console.log(response);
           return response.json();
         })
-        .then(function(data) {
-          playersData = data;
-          var a = "";
-          for (var key in playersData) {
-            a += '<li class="players">' + key + "</li>";
-          }
-          $(thisObj).append("<ul>" + a + "</ul>");
+        .then(function(players) {
+          console.log(players);
+          apiData = players;
+          var play_data = "";
+          players.forEach(player => {
+            play_data += `<li class="players">${player}</li>`;
+          });
+          $(thisObj).append(`<ul>${play_data}</ul>`);
         });
     }
-    $(this).children().toggle();
+    $(this)
+      .find(".players")
+      .toggle();
   });
 
   $(document.body).on("click", ".players", function(event) {
     event.stopPropagation();
+    var season = $(this)
+      .parent()
+      .closest(".seasons")
+      .attr("season-id");
+    var team = $(this)
+      .parent()
+      .closest(".teams")
+      .attr("team-id");
     var thisObj = this;
-    // console.log(thisObj)
-    var pl = $(this).text();
-    // console.log(pl)
+    var player = $(this).text();
+    console.log($(this).children().length);
 
-    var d = "";
+    if ($(this).children().length === 0) {
+      fetch("/api/players/" + season + "/" + team + "/" + player)
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(playerdetails) {
+          console.log(playerdetails);
 
-    for (var i in playersData[pl]) {
-      d += '<li class="datas">' + i + ":" + playersData[pl][i] + "</li>";
+          var player_data = `<div class='rowvalue'><div>TotalRun: </div><div>${
+            playerdetails.TotalRun
+          }</div></div>
+                <div class='rowvalue'><div>Average:   </div><div>${
+                  playerdetails.Average
+                }</div></div>
+                <div class='rowvalue'><div>StrikeRate: </div><div>${
+                  playerdetails.StrikeRate != "NaN"
+                    ? playerdetails.StrikeRate
+                    : 0
+                }</div></div>
+                <div class='rowvalue'><div>Thirites: </div><div>${
+                  playerdetails.Thirites
+                }</div></div>
+                
+                <div class='rowvalue'><div>Wickets: </div><div>${
+                  playerdetails.Wickets
+                }</div></div>
+                <div class='rowvalue'><div>Economy: </div><div>${
+                  playerdetails.Economy != "NaN" ? playerdetails.Economy : 0
+                }</div></div>`;
+
+          $(".player-table").append(
+            `<div class='play_data'>${player_data}</div>`
+          );
+        });
     }
-    $(thisObj).append(d);
-    $(this).find(".datas").toggle();
+    $(".player-table")
+      .children()
+      .hide();    
   });
 });

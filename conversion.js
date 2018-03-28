@@ -1,9 +1,8 @@
-const mocha=require('mocha');
-const del=require('./schemaa/delivery-schema')
-const match=require('./schemaa/match-schema')
+// const delivery=require('./models/deliveries')
+const match=require('./models/matches')
 const csvFilePath='./matches.csv'
 const csv=require('csvtojson')
-require('./database/connection')
+require('./dbconnection')
 csv()
 .fromFile(csvFilePath)
 .on('json',(jsonObj)=>{
