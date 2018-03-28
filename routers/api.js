@@ -44,7 +44,7 @@ router.get("/player/:season/:team", function(req, res) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-function getbatsmandata(season, player) {
+function getBatsManData(season, player) {
   return deliverymatches
     .aggregate([
       {
@@ -83,7 +83,7 @@ function getbatsmandata(season, player) {
     });
 }
 
-function getmatchplayed(season, player) {
+function getMatchPlayed(season, player) {
   return deliverymatches
     .find({
       $and: [
@@ -97,7 +97,7 @@ function getmatchplayed(season, player) {
     });
 }
 
-function getbowlerdata(season, player) {
+function getBowlerData(season, player) {
   return deliverymatches
     .aggregate([
       {
@@ -137,9 +137,9 @@ function getbowlerdata(season, player) {
 }
 
 router.get("/players/:season/:team/:player", (req, res) => {
-  getbatsmandata(req.params.season, req.params.player).then(batsmandata => {
-    getmatchplayed(req.params.season, req.params.player).then(matchdata => {
-      getbowlerdata(req.params.season, req.params.player).then(bowlerdata => {
+  getBatsManData(req.params.season, req.params.player).then(batsmandata => {
+    getMatchPlayed(req.params.season, req.params.player).then(matchdata => {
+      getBowlerData(req.params.season, req.params.player).then(bowlerdata => {
         var player_details = {};
         (player_details["Name"] = req.params.player),
           (player_details["TotalRun"] = batsmandata[0].batsmanRun),
@@ -157,7 +157,7 @@ router.get("/players/:season/:team/:player", (req, res) => {
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 // mergedata()
-function mergedata() {
+function mergeData() {
   deliv_data
     .aggregate([
       {
