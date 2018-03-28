@@ -89,7 +89,8 @@ $(document).ready(function() {
     console.log($(this).children().length);
 
     if ($(this).children().length === 0) {
-      fetch("/api/players/" + season + "/" + team + "/" + player)
+      // fetch("/api/players/" + season + "/" + team + "/" + player)
+      fetch("/api/players/?player="+player+"&season="+season)
         .then(function(response) {
           return response.json();
         })

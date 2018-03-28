@@ -8,7 +8,7 @@ var player_datas = {};
 ///getting unique seasons
 router.get("/season", function(req, res) {
   getSeason().then(function(season){
-    console.log(season)
+    // console.log(season)
     res.send(season.sort())
   })
 }); 
@@ -38,14 +38,14 @@ function getTeam(season){
 
 router.get("/player/:season/:team", function(req, res) {  
   getPlayers(req.params.season,req.params.team).then(function(player){
-    console.log(player)
+    // console.log(player)
     res.send(player);
   })    
 })
 
 
 function getPlayers(season,team){
-  console.log(typeof(season)) 
+  // console.log(typeof(season)) 
   return deliverymatches.find({ season: parseInt(season), batting_team: team }).distinct("batsman").then(batsman => {
   return deliverymatches.find({ season: parseInt(season), bowling_team: team }).distinct("bowler").then(bowler => {
     
@@ -154,12 +154,13 @@ function getBowlerData(season, player) {
     });
 }
 
-router.get("/players/:season/:team/:player", (req, res) => {
-  getBatsManData(req.params.season, req.params.player).then(batsmandata => {
-    getMatchPlayed(req.params.season, req.params.player).then(matchdata => {
-      getBowlerData(req.params.season, req.params.player).then(bowlerdata => {
+router.get("/players", (req, res) => {
+ 
+  getBatsManData(req.query.season, req.query.player).then(batsmandata => {
+    getMatchPlayed(req.query.season, req.query.player).then(matchdata => {
+      getBowlerData(req.query.season, req.query.player).then(bowlerdata => {
         var player_details = {};
-        (player_details["Name"] = req.params.player),
+        (player_details["Name"] = req.query.player),
           (player_details["TotalRun"] = batsmandata[0].batsmanRun),
           (player_details["Average"] = (batsmandata[0].batsmanRun / matchdata).toFixed(2)),
           (player_details["StrikeRate"] = (batsmandata[0].batsmanRun /batsmandata[0].balls *100).toFixed(2)),
