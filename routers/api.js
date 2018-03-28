@@ -14,9 +14,7 @@ router.get("/season", function(req, res) {
 }); 
 
 function getSeason(){
- return deliverymatches.distinct("season").then(function(season){
-  return season
- })  
+ return deliverymatches.distinct("season")
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -154,13 +152,14 @@ function getBowlerData(season, player) {
     });
 }
 
-router.get("/players", (req, res) => {
- 
-  getBatsManData(req.query.season, req.query.player).then(batsmandata => {
-    getMatchPlayed(req.query.season, req.query.player).then(matchdata => {
-      getBowlerData(req.query.season, req.query.player).then(bowlerdata => {
+router.get("/players/:player", (req, res) => {
+ console.log(req.query.season)
+//  res.send(req.query)
+  getBatsManData(req.query.season, req.params.player).then(batsmandata => {
+    getMatchPlayed(req.query.season, req.params.player).then(matchdata => {
+      getBowlerData(req.query.season, req.params.player).then(bowlerdata => {
         var player_details = {};
-        (player_details["Name"] = req.query.player),
+        (player_details["Name"] = req.params.player),
           (player_details["TotalRun"] = batsmandata[0].batsmanRun),
           (player_details["Average"] = (batsmandata[0].batsmanRun / matchdata).toFixed(2)),
           (player_details["StrikeRate"] = (batsmandata[0].batsmanRun /batsmandata[0].balls *100).toFixed(2)),

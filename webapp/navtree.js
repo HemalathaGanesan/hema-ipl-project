@@ -90,7 +90,7 @@ $(document).ready(function() {
 
     if ($(this).children().length === 0) {
       // fetch("/api/players/" + season + "/" + team + "/" + player)
-      fetch("/api/players/?player="+player+"&season="+season)
+      fetch("/api/players/"+player+"?season="+season)
         .then(function(response) {
           return response.json();
         })
