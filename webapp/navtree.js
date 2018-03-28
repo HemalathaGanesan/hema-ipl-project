@@ -118,7 +118,7 @@ $(document).ready(function() {
                   playerdetails.Economy != "NaN" ? playerdetails.Economy : 0
                 }</div></div>`;
 
-          $(".player-table").append(
+          $(".player-table").html(
             `<div class='play_data'>${player_data}</div>`
           );
         });

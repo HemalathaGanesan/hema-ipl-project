@@ -38,7 +38,7 @@ body {
 .teams {
   border: 2px solid;
   padding: 10px 30px;
-  width: 20%;
+  /* width: 20%; */
   background-color: aliceblue;
 }
 .team-text {
@@ -70,7 +70,12 @@ body {
 }
 .player-table {
   width: 50%;
-  top: 30%;
+  top: 20%;
   position: absolute;
-  margin-left: 436px;
+  margin-left: 613px;
+}
+.data{
+  overflow-y: auto;
+    height: 500px;
+    width: 600px;
 }
