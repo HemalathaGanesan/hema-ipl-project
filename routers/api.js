@@ -7,40 +7,58 @@ var player_datas = {};
 
 ///getting unique seasons
 router.get("/season", function(req, res) {
-  deliverymatches.distinct("season").then(function(result) {
-    res.send(result.sort());
-  });
-});
+  getSeason().then(function(season){
+    console.log(season)
+    res.send(season.sort())
+  })
+}); 
+
+function getSeason(){
+ return deliverymatches.distinct("season").then(function(season){
+  return season
+ })  
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////
 
 //getting seasonwise unique teams
 router.get("/team/:season", function(req, res) {
-  deliverymatches
-    .find({ season: req.params.season })
-    .distinct("team1")
-    .then(data => {
-      res.send(data);
+  getTeam(req.params.season).then(team => {
+      res.send(team);
     });
 });
+
+function getTeam(season){
+  return deliverymatches.find({ season:season }).distinct("team1").then(function(team){
+    return team
+  })
+}
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-router.get("/player/:season/:team", function(req, res) {
-  deliverymatches
-    .find({ season: req.params.season, batting_team: req.params.team })
-    .distinct("batsman")
-    .then(batsman => {
-      deliverymatches
-        .find({ season: req.params.season, bowling_team: req.params.team })
-        .distinct("bowler")
-        .then(bowler => {
-          var players = batsman.concat(bowler).filter((play, index, arr) => {
-            return arr.indexOf(play) === index;
-          });
-          res.send(players);
-        });
-    });
-});
+router.get("/player/:season/:team", function(req, res) {  
+  getPlayers(req.params.season,req.params.team).then(function(player){
+    console.log(player)
+    res.send(player);
+  })    
+})
+
+
+function getPlayers(season,team){
+  console.log(typeof(season)) 
+  return deliverymatches.find({ season: parseInt(season), batting_team: team }).distinct("batsman").then(batsman => {
+  return deliverymatches.find({ season: parseInt(season), bowling_team: team }).distinct("bowler").then(bowler => {
+    
+       var players = batsman.concat(bowler).filter((play, index, arr) => {
+        
+          return (arr.indexOf(play) === index)
+         
+          
+})
+return players
+})
+}) 
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
